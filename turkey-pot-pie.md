@@ -16,7 +16,7 @@ Ingredients
 - 1/2 teaspoon ground black pepper
 - 1/2 teaspoon garlic powder 
 - 1 teaspoon celery seed
-- 1/2 teaspoon Italian seasoning
+- 1/2 teaspoon Italian seasoning (oregano, basil, marjoram, thyme, cracked rosemary)
 - 2 cups chicken broth
 - 2/3 cups milk
 - 2 cups cubed cooked turkey meat - light and dark meat mixed
@@ -28,3 +28,5 @@ Directions
  3. Stir in butter, flour, salt, black pepper, celery seed, and Italian seasoning; slowly whisk in the chicken broth and milk until the mixture comes to a simmer and thickens. Remove from heat; stir the cooked vegetables and turkey meat into the filling until well combined.
  4. Fit 2 pie crusts into the bottom of 2 9-inch pie dishes. Spoon half the filling into each pie crust, then top each pie with another crust. Pinch and roll the top and bottom crusts together at the edge of each pie to seal, and cut several small slits into the top of the pies with a sharp knife to release steam.
  5. Bake in the preheated oven until the crusts are golden brown and the filling is bubbly, 30 to 35 minutes. If the crusts are browning too quickly, cover the pies with aluminum foil after about 15 minutes. Cool for 10 minutes before serving.
+ 
+* the Italian seasoning was a Penzeys "Italian Herb" mix.  I'd guess each spice had a < 1/8 of a tsp.
