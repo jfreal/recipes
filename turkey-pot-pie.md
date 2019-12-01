@@ -1,7 +1,11 @@
 Adapted From:
 https://www.allrecipes.com/recipe/215447/dads-leftover-turkey-pot-pie/print/
 
-Cooked 2019 Thanksgiving alpha and with leftovers.  Was amazing.
+Cooked with the  Thanksgiving alpha turkey and again with leftovers.  Was amazing.
+
+The original recipes cooks two pot pies. I've only cooked either one pie or three so the ratios may be a bit off.  I'd spice to taste and thicken slowly.
+
+We removed the onions from the original because I have a hard time with them and the green beans and peas because we didn't have any and going to the store the day before Thanksgiving is not an ideal experience.
 
 Ingredients
 - 1 cup canned peas
@@ -11,7 +15,7 @@ Ingredients
 - 1/2 teaspoon salt
 - 1/2 teaspoon ground black pepper
 - 1/2 teaspoon garlic powder 
-- 1/2 teaspoon celery seed
+- 1 teaspoon celery seed
 - 1/2 teaspoon Italian seasoning
 - 2 cups chicken broth
 - 2/3 cups milk
