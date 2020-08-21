@@ -10,26 +10,25 @@ We removed the onions from the original because I have a hard time with them and
 Ingredients
 - 1 cup canned peas
 - 1 cup chopped carrots
-
-Single dish:
 - 1/3 cup butter
 - 1/2 teaspoon salt
 - 1/2 teaspoon ground black pepper
 - 1/2 teaspoon garlic powder 
 - 1 teaspoon celery seed
-- 1/2 teaspoon Italian seasoning (oregano, basil, marjoram, thyme, cracked rosemary) *
-- 2 cups chicken broth
-
+- 1/2 teaspoon Italian seasoning (oregano, basil, marjoram, thyme, cracked rosemary)
+ * I use the Italian seasoning was a Penzeys "Italian Herb" mix.  Each spice is about an 1/8th of a teaspoon or pinch if you want to make your own.
+- 2 cups chicken or vegetable broth
 - 1/3 cup all-purpose flour
 - 2/3 cups milk
-- 2 cups cubed cooked turkey meat - light and dark meat mixed
+- 2 cups cubed cooked turkey or chicken - a mix of light and dark meat makes it better
 - 2 (9 inch) unbaked pie crusts
 
 Directions
- 1. Preheat an oven to 425 degrees F (220 degrees C).
- 2. Place the peas and carrots into a saucepan; cover with browth, bring to a boil, and simmer over medium-low heat until the celery is tender, about 8 minutes. Drain the vegetables in a colander set in the sink, and set aside.
- 3. Stir in butter, flour, salt, black pepper, celery seed, and Italian seasoning; slowly whisk in the chicken broth and milk until the mixture comes to a simmer and thickens. Remove from heat; stir the cooked vegetables and turkey meat into the filling until well combined.
- 4. Fit 2 pie crusts into the bottom of 2 9-inch pie dishes. Spoon half the filling into each pie crust, then top each pie with another crust. Pinch and roll the top and bottom crusts together at the edge of each pie to seal, and cut several small slits into the top of the pies with a sharp knife to release steam.
- 5. Bake in the preheated oven until the crusts are golden brown and the filling is bubbly, 30 to 35 minutes. If the crusts are browning too quickly, cover the pies with aluminum foil after about 15 minutes. Cool for 10 minutes before serving.
+ 1. Place the peas and carrots into a saucepan; cover with water, bring to a boil, and simmer over medium-low heat until the celery is tender, about 8 minutes. Drain the vegetables in a colander set in the sink, and set aside.
+ 2. Combine the broth and milk with the butter, salt, black pepper, celery seed, and Italian seasoning; slowly whisk in the flour and milk until the mixture comes to a simmer and thickens. 
+ 3. Keep mixture on the low heat until the mixture thickens into a filling.  You can add more flour to speed up the process.  Remove mixture from heat; stir the cooked vegetables and turkey meat into the filling until well combined.
+ 4. Preheat an oven to 425 degrees F (220 degrees C).
+ 5. Place a pie crust on the bottom of a 9-inch pie dishes. Spoon the filling into the pie crust, then cover the filling with the other crust.  You could have a little leftover filling, that's ok. Pinch and roll the top and bottom crusts together at the edge of each pie to seal, and cut several small slits into the top of the pies with a sharp knife to release steam.
+ 6. Bake in the preheated oven until the crusts are golden brown and the filling is bubbly, 30 to 35 minutes. If the crusts are browning too quickly, cover the pies with aluminum foil after about 15 minutes. Cool for 10 minutes before serving.
  
-* the Italian seasoning was a Penzeys "Italian Herb" mix.  I'd guess each spice had a < 1/8 of a tsp.
+
