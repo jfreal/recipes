@@ -1,3 +1,12 @@
+After Thanksgiving, we were looking at a mountain of leftover turkey and were wondering what to do with it.  I've never cooked pot pies before, but I found a recipe online and tweaked it with what we had in the cupboard.  I was nervous the first time I cooked and hoped I did a good job.
+
+See, my mother-in-law was over when I cooked the recipe for the first time.  She's a pot pie aficionado and regularly orders the same pot pie from one of her favorite restaurants.  During dinner, she took the first bite of the first Westchester Pot Pie ever. Worried, I asked her, "Is it good?  Should I change anything?".  She put down her fork and looked at me with a serious face and said, "This is better than the restaurant's, don't change a thing!"  I guess I did ok after all.
+
+Since then, I've cooked the pot pies whenever we have leftover turkey or chicken.  Next Thanksgiving, I may skip eating whole turkey meat entirely and cook these instead.
+
+This spring, my wife and I were missing our family because of the lockdown.  We decided to cook and deliver pies to them. We even wrote their initials into the pies with a knife before baking them.  Food is a great way to stay connected, and Westchester Pot Pie is now a tradition for us.  We joke around when eating it and ask if we should change anything.  The answer is always, "Don't change a thing!"
+
+
 Adapted From:
 https://www.allrecipes.com/recipe/215447/dads-leftover-turkey-pot-pie/print/
 
