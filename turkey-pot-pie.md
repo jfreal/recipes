@@ -1,4 +1,4 @@
-After Thanksgiving, we were looking at a mountain of leftover turkey and were wondering what to do with it.  I've never cooked pot pies before, but I found a recipe online and tweaked it with what we had in the cupboard.  I was nervous the first time I cooked and hoped I did a good job.
+After Thanksgiving, I was looking at a mountain of leftover turkey and were wondering what to do with it.  I've never cooked pot pies before, but I found a recipe online and tweaked it with what we had in the cupboard.  I was nervous the first time I cooked and hoped I did a good job.
 
 See, my mother-in-law was over when I cooked the recipe for the first time.  She's a pot pie aficionado and regularly orders the same pot pie from one of her favorite restaurants.  During dinner, she took the first bite of the first Westchester Pot Pie ever. Worried, I asked her, "Is it good?  Should I change anything?".  She put down her fork and looked at me with a serious face and said, "This is better than the restaurant's, don't change a thing!"  I guess I did ok after all.
 
@@ -19,7 +19,7 @@ We removed the onions from the original because I have a hard time with them and
 Ingredients
 - 1 cup canned peas
 - 1 cup chopped carrots
-- 1/3 cup butter
+- 5 tbps butter
 - 1/2 teaspoon salt
 - 1/2 teaspoon ground black pepper
 - 1/2 teaspoon garlic powder 
@@ -33,7 +33,7 @@ Ingredients
 - 2 (9 inch) unbaked pie crusts
 
 Directions
- 1. Place the peas and carrots into a saucepan; cover with water, bring to a boil, and simmer over medium-low heat until the celery is tender, about 8 minutes. Drain the vegetables in a colander set in the sink, and set aside.
+ 1. Place the peas and carrots into a saucepan; cover with water, bring to a boil, and simmer over medium-low heat until the carrots are tender, about 8 minutes. Drain the vegetables in a colander set in the sink, and set aside.
  2. Combine the broth and milk with the butter, salt, black pepper, celery seed, and Italian seasoning; slowly whisk in the flour and milk until the mixture comes to a simmer and thickens. 
  3. Keep mixture on the low heat until the mixture thickens into a filling.  You can add more flour to speed up the process.  Remove mixture from heat; stir the cooked vegetables and turkey meat into the filling until well combined.
  4. Preheat an oven to 425 degrees F (220 degrees C).
