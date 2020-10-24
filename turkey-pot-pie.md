@@ -26,7 +26,7 @@ Ingredients
 - 1 teaspoon celery seed
 - 1/2 teaspoon Italian seasoning (oregano, basil, marjoram, thyme, cracked rosemary)
  * I use the Italian seasoning was a Penzeys "Italian Herb" mix.  Each spice is about an 1/8th of a teaspoon or pinch if you want to make your own.
-- 2 cups chicken or vegetable broth
+- 1 cups chicken or vegetable broth
 - 1/3 cup all-purpose flour
 - 2/3 cups milk
 - 2 cups cubed cooked turkey or chicken - a mix of light and dark meat makes it better
