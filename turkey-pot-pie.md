@@ -1,10 +1,10 @@
-After Thanksgiving, I was looking at a mountain of leftover turkey and were wondering what to do with it.  I've never cooked pot pies before, but I found a recipe online and tweaked it with what we had in the cupboard.  I was nervous the first time I cooked and hoped I did a good job.
+After Thanksgiving, I looked at a heaping pile of leftover turkey and wondered what to do with all of it.  A friend of mine suggested trying to cook pot pies.  I've never cooked pot pies before, but I found a recipe online and tweaked based on what we had available. I was nervous the first time I cooked the recipe.  My mother-in-law was over, and the stakes were high.
 
-See, my mother-in-law was over when I cooked the recipe for the first time.  She's a pot pie aficionado and regularly orders the same pot pie from one of her favorite restaurants.  During dinner, she took the first bite of the first Westchester Pot Pie ever. Worried, I asked her, "Is it good?  Should I change anything?".  She put down her fork and looked at me with a serious face and said, "This is better than the restaurant's, don't change a thing!"  I guess I did ok after all.
+My mother-in-law loves pot pies.  Every time we go to a particular restaurant, she always orders the same pot pie dish.  After I cooked the recipe, I nervously watched her as she took the first bite of the first Sylvie's Pot Pie ever. Worried, I asked her, "Is it good? Should I change anything?". She put down her fork and looked at me with a serious face and said, "This is better than the restaurants, don't change a thing!" I guess I did ok after all.
 
-Since then, I've cooked the pot pies whenever we have leftover turkey or chicken.  Next Thanksgiving, I may skip eating whole turkey meat entirely and cook these instead.
+Since then, I've cooked the pot pies whenever we have leftover turkey or even chicken. Next Thanksgiving, I may skip eating whole turkey meat entirely and cook these instead.
 
-This spring, my wife and I were missing our family because of the lockdown.  We decided to cook and deliver pies to them. We even wrote their initials into the pies with a knife before baking them.  Food is a great way to stay connected, and Westchester Pot Pie is now a tradition for us.  We joke around when eating it and ask if we should change anything.  The answer is always, "Don't change a thing!"
+This spring, my wife and I were missing our family because of the lockdown. We decided to cook and deliver pies to them. We even wrote their initials into the pies with a knife before baking them. Food is a great way to stay connected. Sylvie's Pot Pie is now a tradition for us. We joke around when eating it and ask if I should change anything. The answer is always, "Don't change a thing!"
 
 
 Adapted From:
