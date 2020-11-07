@@ -11,7 +11,7 @@ Ingredients
 - 1 cup chopped carrots
 - 5 tbps butter
 - 1/2 teaspoon salt
-- 1/2 teaspoon ground black pepper
+- 1 teaspoon ground black pepper
 - 1/2 teaspoon garlic powder 
 - 1 teaspoon celery seed
 - 1/2 teaspoon Italian seasoning (oregano, basil, marjoram, thyme, cracked rosemary)
