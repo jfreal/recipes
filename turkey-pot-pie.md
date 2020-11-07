@@ -2,19 +2,9 @@ After Thanksgiving, I looked at a heaping pile of leftover turkey and wondered w
 
 My mother-in-law loves pot pies.  Every time we go to a particular restaurant, she always orders the same pot pie dish.  After I cooked the recipe, I nervously watched her as she took the first bite of the first Sylvie's Pot Pie ever. Worried, I asked her, "Is it good? Should I change anything?". She put down her fork and looked at me with a serious face and said, "This is better than the restaurants, don't change a thing!" I guess I did ok after all.
 
-Since then, I've cooked the pot pies whenever we have leftover turkey or even chicken. Next Thanksgiving, I may skip eating whole turkey meat entirely and cook these instead.
+Since then, I've cooked the pot pies whenever we have leftover turkey or even chicken. Next Thanksgiving, I may skip serving whole turkey meat entirely and cook these instead.
 
 This spring, my wife and I were missing our family because of the lockdown. We decided to cook and deliver pies to them. We even wrote their initials into the pies with a knife before baking them. Food is a great way to stay connected. Sylvie's Pot Pie is now a tradition for us. We joke around when eating it and ask if I should change anything. The answer is always, "Don't change a thing!"
-
-
-Adapted From:
-https://www.allrecipes.com/recipe/215447/dads-leftover-turkey-pot-pie/print/
-
-Cooked with the Thanksgiving alpha turkey and again with leftovers.  The recipe was amazing.
-
-The original recipes cooks two pot pies. I've only cooked either one pie or three so the ratios may be a bit off.  I'd spice to taste and thicken slowly.
-
-We removed the onions from the original because I have a hard time with them and the green beans and peas because we didn't have any. Going to the store the day before Thanksgiving is not an ideal experience.
 
 Ingredients
 - 1 cup canned peas
@@ -40,4 +30,16 @@ Directions
  5. Place a pie crust on the bottom of a 9-inch pie dishes. Spoon the filling into the pie crust, then cover the filling with the other crust.  You could have a little leftover filling, that's ok. Pinch and roll the top and bottom crusts together at the edge of each pie to seal, and cut several small slits into the top of the pies with a sharp knife to release steam.
  6. Bake in the preheated oven until the crusts are golden brown and the filling is bubbly, 30 to 35 minutes. If the crusts are browning too quickly, cover the pies with aluminum foil after about 15 minutes. Cool for 10 minutes before serving.
  
+ Notes:
+ 
+ 
+Adapted From:
+https://www.allrecipes.com/recipe/215447/dads-leftover-turkey-pot-pie/print/
+
+Cooked with the Thanksgiving alpha turkey and again with leftovers.  The recipe was amazing.
+
+The original recipes cooks two pot pies. I've only cooked either one pie or three so the ratios may be a bit off.  I'd spice to taste and thicken slowly.
+
+We removed the onions from the original because I have a hard time with them and the green beans and peas because we didn't have any. Going to the store the day before Thanksgiving is not an ideal experience.
+
 
