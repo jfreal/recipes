@@ -1,10 +1,12 @@
-After Thanksgiving, I looked at a heaping pile of leftover turkey and wondered what to do with all of it.  A coworker of mine suggested trying to cook pot pies.  I've never cooked pot pies before, but I found a recipe online and tweaked based on what we had available. I was nervous the first time I cooked the recipe.  My mother-in-law was over, and the stakes were high.
+**Sylvie's Pot Pie**
+
+After Thanksgiving, I had a heaping pile of leftover turkey and wondered what to do with all of it.  A coworker of mine suggested trying to cook pot pies.  I've never cooked pot pies before, but I found a recipe online and tweaked based on what we had available. I was nervous the first time I cooked the recipe.  My mother-in-law was over, and the stakes were high.
 
 My mother-in-law loves pot pies.  Every time we go to a particular restaurant, she always orders the same pot pie dish.  After I cooked the recipe, I nervously watched her as she took the first bite of the first Sylvie's Pot Pie ever. Worried, I asked her, "Is it good? Should I change anything?". She put down her fork and looked at me with a serious face and said, "This is better than the restaurants, don't change a thing!" I guess I did ok after all.
 
-Since then, I've cooked the pot pies whenever we have leftover turkey or even chicken. Next Thanksgiving, I may skip serving whole turkey meat entirely and cook these instead.
+Since then, I've cooked the pot pies whenever we have leftover turkey or chicken.
 
-This spring, my wife and I were missing our family because of the lockdown. We decided to cook and deliver pies to them. We even wrote their initials into the pies with a knife before baking them. Food is a great way to stay connected. Sylvie's Pot Pie is now a tradition for us. We joke around when eating it and ask if I should change anything. The answer is always, "Don't change a thing!"
+During spring 2020, my wife and I were missing our family because of the COVID lockdowns. We decided to cook and deliver pies to the family as a way to stay connected. We even wrote their initials into the pies with a knife before baking them. Sylvie's Pot Pie is now a tradition for us. We joke around when eating it and ask if I should change anything. The answer is always, "Don't change a thing!"
 
 Ingredients
 - 1 cup canned peas
