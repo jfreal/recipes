@@ -16,8 +16,7 @@ Ingredients
 - 1/2 teaspoon ground black pepper
 - 1/2 teaspoon garlic powder 
 - 1 teaspoon celery seed
-- 1/2 teaspoon Italian seasoning (oregano, basil, marjoram, thyme, cracked rosemary)
- * I use the Italian seasoning was a Penzeys "Italian Herb" mix.  Each spice is about an 1/8th of a teaspoon or pinch if you want to make your own.
+- 1/2 teaspoon Italian seasoning (oregano, basil, marjoram, thyme, cracked rosemary) * 
 - 1 cup chicken or vegetable broth
 - 1/3 cup all-purpose flour
 - 2/3 cups milk
@@ -33,6 +32,8 @@ Directions
  6. Bake in the preheated oven until the crusts are golden brown and the filling is bubbly, 30 to 35 minutes. If the crusts are browning too quickly, cover the pies with aluminum foil after about 15 minutes. Cool for 10 minutes before serving.
  
  Notes:
+ 
+ *I use Penzeys "Italian Herb" mix.  Each spice is about an 1/8th of a teaspoon or pinch if you want to make your own.
  
  I've been cooking this with a butter/flour roux for a few months instead of sifting in flour.
  
