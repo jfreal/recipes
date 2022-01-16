@@ -1,21 +1,21 @@
-creamy tomato soup with cheesy tortellini and chicken and then a pop of color from the bright green spinach.
+## creamy tomato soup with cheesy tortellini and chicken and then a pop of color from the bright green spinach.
 
 INGREDIENTS
-1/2 medium yellow onion, diced
-1/3 cup all purpose flour
-1 Tbsp dried basil
-1 clove of garlic, minced
-2 Tbsp tomato paste
-3 Tbsp olive oil
-4 cups chicken broth
-2 (14.5 oz) cans petite diced tomatoes
-1 to 1 1/2 lbs boneless, skinless chicken thighs
-1 tsp salt
-1/2 tsp pepper
-4 cups frozen cheese tortellini (or you can use fresh)
-3 cups packed spinach (you can definitely add more than this if you want)
-1/2 cup Parmesan cheese
-1 cup heavy cream or 1 cup half and half
+ - 1/2 medium yellow onion, diced
+ - 1/3 cup all purpose flour
+ - 1 Tbsp dried basil
+ - 1 clove of garlic, minced
+ - 2 Tbsp tomato paste
+ - 3 Tbsp olive oil
+ - 4 cups chicken broth
+ - 2 (14.5 oz) cans petite diced tomatoes
+ - 1 to 1 1/2 lbs boneless, skinless chicken thighs
+ - 1 tsp salt
+ - 1/2 tsp pepper
+ - 4 cups frozen cheese tortellini (or you can use fresh)
+ - 3 cups packed spinach (you can definitely add more than this if you want)
+ - 1/2 cup Parmesan cheese
+ - 1 cup heavy cream or 1 cup half and half
 
 INSTRUCTIONS
 * In a microwave-safe bowl add the onions, flour, basil, garlic, tomato paste and drizzle with olive oil. Microwave for 5 minutes, stirring every 90 seconds or so. (The mixture will be pasty and look weird but don’t worry it will all be okay in the end). Add the mixture to the slow cooker*.
