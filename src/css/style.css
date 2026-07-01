@@ -1,0 +1,278 @@
+:root {
+  --sun: #ffb43b;
+  --sun-deep: #f4860a;
+  --sky: #5cc7e0;
+  --coral: #ff7a59;
+  --leaf: #54b67a;
+  --cream: #fffaf0;
+  --ink: #3a2f25;
+  --ink-soft: #7a6c5d;
+  --card: #ffffff;
+  --shadow: 0 10px 30px rgba(244, 134, 10, 0.12);
+  --radius: 18px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Nunito", system-ui, sans-serif;
+  color: var(--ink);
+  background: linear-gradient(160deg, #fff6e0 0%, #fdeccb 40%, #e8f7fb 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  line-height: 1.55;
+}
+
+h1,
+h2,
+.brand-name {
+  font-family: "Fraunces", Georgia, serif;
+  letter-spacing: -0.01em;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ---- header ---- */
+.site-header {
+  text-align: center;
+  padding: 2.6rem 1rem 1.4rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.brand-mark {
+  font-size: 1.9rem;
+  filter: drop-shadow(0 2px 6px rgba(244, 134, 10, 0.4));
+}
+
+.brand-name {
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--sun-deep), var(--coral));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.tagline {
+  margin: 0.4rem 0 0;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+/* ---- layout ---- */
+.wrap {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 1.2rem 3rem;
+}
+
+/* ---- hero ---- */
+.hero {
+  text-align: center;
+  margin: 1rem 0 2.4rem;
+}
+
+.hero h1 {
+  font-size: clamp(2.2rem, 6vw, 3.4rem);
+  margin: 0;
+}
+
+.hero p {
+  color: var(--ink-soft);
+  font-weight: 600;
+  margin: 0.4rem 0 0;
+}
+
+/* ---- gallery ---- */
+.recipe-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1.3rem;
+}
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  border: 1px solid rgba(244, 134, 10, 0.08);
+}
+
+.card a {
+  display: block;
+  padding: 1.3rem 1.3rem 1.5rem;
+  height: 100%;
+  position: relative;
+}
+
+.card::before {
+  content: "";
+  display: block;
+  height: 8px;
+  background: linear-gradient(90deg, var(--sun), var(--coral), var(--sky));
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(244, 134, 10, 0.22);
+}
+
+.card h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.35rem;
+}
+
+.card-subtitle {
+  margin: 0 0 1.1rem;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  font-style: italic;
+}
+
+.card-go {
+  font-weight: 700;
+  color: var(--sun-deep);
+}
+
+/* ---- single recipe ---- */
+.recipe {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.8rem 1.9rem 2.2rem;
+  max-width: 720px;
+  margin: 0 auto;
+  border-top: 8px solid var(--sun);
+}
+
+.back {
+  display: inline-block;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  color: var(--sky);
+}
+
+.back:hover {
+  color: var(--sun-deep);
+}
+
+.recipe h1 {
+  margin: 0 0 0.3rem;
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+}
+
+.recipe-subtitle {
+  margin: 0 0 1.2rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  font-size: 1.05rem;
+}
+
+.recipe-body {
+  font-family: "Nunito", system-ui, sans-serif;
+  font-size: 1.02rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ---- recipe sections ---- */
+.section {
+  margin-top: 1.7rem;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 1.4rem;
+  margin: 0 0 0.7rem;
+}
+
+.pip {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.pip-sun {
+  background: var(--sun);
+  box-shadow: 0 0 0 4px rgba(255, 180, 59, 0.22);
+}
+
+.pip-sky {
+  background: var(--sky);
+  box-shadow: 0 0 0 4px rgba(92, 199, 224, 0.22);
+}
+
+.ingredients {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.ingredients li {
+  padding: 0.5rem 0.9rem;
+  background: #fff7e8;
+  border-radius: 12px;
+  border: 1px solid rgba(244, 134, 10, 0.1);
+  border-left: 4px solid var(--sun);
+}
+
+.steps {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  counter-reset: step;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.steps li {
+  position: relative;
+  padding: 0.2rem 0 0.2rem 2.6rem;
+  counter-increment: step;
+}
+
+.steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.8rem;
+  height: 1.8rem;
+  display: grid;
+  place-items: center;
+  font-family: "Fraunces", serif;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, var(--coral), var(--sun-deep));
+  border-radius: 50%;
+}
+
+/* ---- footer ---- */
+.site-footer {
+  text-align: center;
+  padding: 1.5rem;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
