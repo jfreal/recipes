@@ -1,0 +1,13 @@
+{
+  "name": "my-recipes",
+  "version": "1.0.0",
+  "description": "A bright little recipe site built with Eleventy",
+  "scripts": {
+    "start": "eleventy --serve",
+    "build": "eleventy"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0"
+  }
+}

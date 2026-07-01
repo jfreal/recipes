@@ -1,0 +1,42 @@
+---
+layout: base.njk
+pagination:
+  data: recipes
+  size: 1
+  alias: recipe
+permalink: "/recipes/{{ recipe.slug }}/"
+eleventyComputed:
+  title: "{{ recipe.title }}"
+---
+
+<article class="recipe">
+  <a class="back" href="/">← All recipes</a>
+  <h1>{{ recipe.title }}</h1>
+  <p class="recipe-subtitle">{{ recipe.subtitle }}</p>
+
+  {% if recipe.ingredients.length %}
+  <section class="section">
+    <h2 class="section-head"><span class="pip pip-sun"></span>Ingredients</h2>
+    <ul class="ingredients">
+      {% for item in recipe.ingredients %}
+      <li>{{ item }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
+  {% if recipe.steps.length %}
+  <section class="section">
+    <h2 class="section-head"><span class="pip pip-sky"></span>Method</h2>
+    <ol class="steps">
+      {% for step in recipe.steps %}
+      <li>{{ step }}</li>
+      {% endfor %}
+    </ol>
+  </section>
+  {% endif %}
+
+  {% if not recipe.ingredients.length and not recipe.steps.length %}
+  <pre class="recipe-body">{{ recipe.body }}</pre>
+  {% endif %}
+</article>

@@ -1,0 +1,21 @@
+---
+layout: base.njk
+title: My Recipes
+---
+
+<section class="hero">
+  <h1>What's cooking?</h1>
+  <p>{{ recipes.length }} recipe{{ "s" if recipes.length != 1 }} and counting. Pick one and get going.</p>
+</section>
+
+<ul class="recipe-grid">
+  {% for recipe in recipes %}
+  <li class="card">
+    <a href="/recipes/{{ recipe.slug }}/">
+      <h2>{{ recipe.title }}</h2>
+      <p class="card-subtitle">{{ recipe.subtitle }}</p>
+      <span class="card-go">View recipe →</span>
+    </a>
+  </li>
+  {% endfor %}
+</ul>

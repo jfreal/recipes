@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ title or "My Recipes" }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Nunito:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/">
+        <span class="brand-mark">☀︎</span>
+        <span class="brand-name">My Recipes</span>
+      </a>
+      <p class="tagline">Sunny food, kept simple.</p>
+    </header>
+
+    <main class="wrap">{{ content | safe }}</main>
+
+    <footer class="site-footer">
+      <p>Made with ☀︎ &amp; Eleventy</p>
+    </footer>
+  </body>
+</html>
