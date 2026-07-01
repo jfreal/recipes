@@ -119,12 +119,16 @@ function splitSteps(stepText) {
       .map((s) => cleanItem(s.replace(/^\s*\d+[.)]\s*/, "").replace(/\s*\n\s*/g, " ")))
       .filter(Boolean);
   }
-  // Bullet list — keep wrapped continuation lines attached to their bullet.
+  // Bullet list — keep wrapped continuation lines attached to their bullet, but
+  // treat a blank line as a hard boundary so separate prose isn't swallowed.
   if (/^\s*[*\-•]\s+/m.test(text)) {
     const items = [];
+    let open = false; // is there a current item to continue?
     for (const line of text.split("\n")) {
-      if (/^\s*[*\-•]\s+/.test(line)) items.push(line);
-      else if (items.length && line.trim()) items[items.length - 1] += ` ${line.trim()}`;
+      if (/^\s*[*\-•]\s+/.test(line)) { items.push(line); open = true; }
+      else if (!line.trim()) { open = false; }
+      else if (open) { items[items.length - 1] += ` ${line.trim()}`; }
+      else { items.push(line.trim()); open = true; }
     }
     return items.map(cleanItem).filter(Boolean);
   }
