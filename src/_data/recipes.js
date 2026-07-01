@@ -119,13 +119,14 @@ function splitSteps(stepText) {
       .map((s) => cleanItem(s.replace(/^\s*\d+[.)]\s*/, "").replace(/\s*\n\s*/g, " ")))
       .filter(Boolean);
   }
-  // Bullet list
+  // Bullet list — keep wrapped continuation lines attached to their bullet.
   if (/^\s*[*\-•]\s+/m.test(text)) {
-    return text
-      .split("\n")
-      .filter((l) => /^\s*[*\-•]\s+/.test(l))
-      .map(cleanItem)
-      .filter(Boolean);
+    const items = [];
+    for (const line of text.split("\n")) {
+      if (/^\s*[*\-•]\s+/.test(line)) items.push(line);
+      else if (items.length && line.trim()) items[items.length - 1] += ` ${line.trim()}`;
+    }
+    return items.map(cleanItem).filter(Boolean);
   }
   // Blank-line separated paragraphs
   if (/\n\s*\n/.test(text)) {
@@ -143,6 +144,17 @@ function splitSteps(stepText) {
   return [cleanItem(text.replace(/\s*\n\s*/g, " "))].filter(Boolean);
 }
 
+// Skip a leading title / intro line: the first non-empty line at or after
+// `from` is a title or blurb (not an ingredient) when it isn't a quantity or a
+// cooking step and a blank line follows it. Returns the index to start from.
+function skipIntro(lines, from) {
+  const i = lines.findIndex((l, idx) => idx >= from && l.trim());
+  if (i === -1) return from;
+  const l = lines[i].trim();
+  const nextBlank = (lines[i + 1] || "").trim() === "";
+  return nextBlank && !QTY.test(l) && !isStepLike(l) ? i + 1 : from;
+}
+
 // Split a body into { ingredients[], steps[] }.
 function parseSections(body) {
   const lines = body.split("\n");
@@ -157,22 +169,14 @@ function parseSections(body) {
 
   let ingLines, stepLines;
   if (ingIdx !== -1 || stepIdx !== -1) {
-    const ingStart = ingIdx === -1 ? 0 : ingIdx + 1;
+    // With no INGREDIENTS header, the prefix may open with a blurb — trim it.
+    const ingStart = ingIdx === -1 ? skipIntro(lines, 0) : ingIdx + 1;
     const ingEnd = stepIdx > ingStart ? stepIdx : lines.length;
     ingLines = lines.slice(ingStart, stepIdx === -1 ? lines.length : ingEnd);
     stepLines = stepIdx === -1 ? [] : lines.slice(stepIdx + 1);
   } else {
-    // 2) Heuristic. Drop a leading title / intro line: the first non-empty line
-    // is a title or blurb (not an ingredient) when it isn't a quantity or a
-    // cooking step and a blank line follows it.
-    let start = 0;
-    const firstIdx = lines.findIndex((l) => l.trim());
-    if (firstIdx !== -1) {
-      const l = lines[firstIdx].trim();
-      const nextBlank = (lines[firstIdx + 1] || "").trim() === "";
-      if (nextBlank && !QTY.test(l) && !isStepLike(l)) start = firstIdx + 1;
-    }
-    // Leading list = ingredients, first step-like line starts the method.
+    // 2) Heuristic: leading list = ingredients, first step-like line starts method.
+    const start = skipIntro(lines, 0);
     let cut = lines.length;
     for (let i = start; i < lines.length; i++) {
       if (lines[i].trim() && isStepLike(lines[i])) { cut = i; break; }
