@@ -38,12 +38,15 @@ try
         _ => Help(exitCode: 2),
     };
 }
-catch (OperationCanceledException)
+catch (OperationCanceledException) when (cts.IsCancellationRequested)
 {
     Console.Error.WriteLine("Cancelled. Hashes read so far are cached for next time.");
     return 130;
 }
-catch (Exception e) when (e is ConfigException or DropboxException or IOException or InvalidDataException or HttpRequestException or InvalidOperationException or System.Text.Json.JsonException)
+// An HttpClient timeout is also an OperationCanceledException; it is an error, not a Ctrl+C.
+catch (Exception e) when (e is ConfigException or DropboxException or IOException or InvalidDataException or HttpRequestException
+                              or InvalidOperationException or System.Text.Json.JsonException or FormatException
+                              or UnauthorizedAccessException or OperationCanceledException)
 {
     Console.Error.WriteLine($"Error: {e.Message}");
     return 1;

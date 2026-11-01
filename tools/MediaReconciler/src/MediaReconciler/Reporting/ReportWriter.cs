@@ -22,10 +22,11 @@ public static partial class ReportWriter
             Path.Combine(outputDirectory, "weak-matches.csv"),
             analysis.Groups.Where(g => g.Strength == MatchStrength.Weak && g.Sources.Count() > 1));
 
+        var slugs = FileSlugs(analysis.Sources);
         foreach (var stats in analysis.PerSource)
         {
             var source = stats.Source;
-            var slug = Slug(source.Name);
+            var slug = slugs[source.Index];
 
             if (source.IsBackup)
             {
@@ -67,6 +68,7 @@ public static partial class ReportWriter
 
         var notBackedUp = analysis.ByBackupCopies[0];
         var belowMin = Tally.Of(analysis.AtRisk);
+        var slugs = FileSlugs(analysis.Sources);
         sb.AppendLine("## Verdict");
         sb.AppendLine();
         if (notBackedUp.Count > 0)
@@ -87,7 +89,7 @@ public static partial class ReportWriter
 
         foreach (var stats in analysis.PerSource.Where(s => !s.Source.IsBackup && s.SafeToRemove.Count > 0))
         {
-            sb.AppendLine($"- 📱 **{Bytes(stats.SafeToRemove.Bytes)}** ({stats.SafeToRemove.Count:N0} items) on **{stats.Source.Name}** is already in {min}+ backups and can be removed from it. See `safe-to-remove-from-{Slug(stats.Source.Name)}.csv`.");
+            sb.AppendLine($"- 📱 **{Bytes(stats.SafeToRemove.Bytes)}** ({stats.SafeToRemove.Count:N0} items) on **{stats.Source.Name}** is already in {min}+ backups and can be removed from it. See `safe-to-remove-from-{slugs[stats.Source.Index]}.csv`.");
         }
 
         var dupes = analysis.PerSource.Where(s => s.DuplicateCopies.Count > 0).ToList();
@@ -264,6 +266,24 @@ public static partial class ReportWriter
         }
 
         return unit == 0 ? $"{bytes} B" : $"{value:0.#} {units[unit]}";
+    }
+
+    /// <summary>One file-name-safe name per source, unique even when names differ only in punctuation or script.</summary>
+    internal static IReadOnlyList<string> FileSlugs(IReadOnlyList<SourceInfo> sources)
+    {
+        var used = new HashSet<string>(StringComparer.Ordinal);
+        return sources.Select(source =>
+        {
+            var slug = Slug(source.Name);
+            if (slug.Length == 0) slug = $"source-{source.Index + 1}";
+            if (!used.Add(slug))
+            {
+                slug = $"{slug}-{source.Index + 1}";
+                used.Add(slug);
+            }
+
+            return slug;
+        }).ToList();
     }
 
     internal static string Slug(string name) =>

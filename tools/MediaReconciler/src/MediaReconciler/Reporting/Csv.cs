@@ -52,6 +52,9 @@ public static class Csv
     public static string Escape(string? value)
     {
         if (string.IsNullOrEmpty(value)) return "";
+
+        // File names come from the scanned sources; stop Excel running one like "=HYPERLINK(...).jpg" as a formula.
+        if (value[0] is '=' or '+' or '-' or '@' or '\t' or '\r') value = "'" + value;
         return value.IndexOfAny([',', '"', '\n', '\r']) >= 0
             ? "\"" + value.Replace("\"", "\"\"") + "\""
             : value;

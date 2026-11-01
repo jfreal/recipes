@@ -22,7 +22,8 @@ public sealed partial class GoogleTakeoutSource : IMediaSource
     internal sealed record Entry(
         string EntryPath, string Location, string CacheKey, long Length, DateTime LastWriteUtc, Func<Stream> Open, string? LocalPath);
 
-    private sealed record Sidecar(string Title, DateTime TakenUtc);
+    /// <param name="CopyIndex">N for "IMG_1234.jpg(N).json": the sidecar of "IMG_1234(N).jpg".</param>
+    private sealed record Sidecar(string Title, DateTime TakenUtc, int? CopyIndex);
 
     public async Task<IReadOnlyList<MediaItem>> ScanAsync(ScanContext context, CancellationToken ct)
     {
@@ -202,10 +203,16 @@ public sealed partial class GoogleTakeoutSource : IMediaSource
                 return null;
             }
 
-            var seconds = timestamp.ValueKind == JsonValueKind.Number
-                ? timestamp.GetInt64()
-                : long.Parse(timestamp.GetString() ?? "0");
-            return new Sidecar(title.GetString() ?? "", DateTimeOffset.FromUnixTimeSeconds(seconds).UtcDateTime);
+            var parsed = timestamp.ValueKind == JsonValueKind.Number
+                ? timestamp.TryGetInt64(out var seconds)
+                : long.TryParse(timestamp.GetString(), out seconds);
+            if (!parsed || seconds < UnixMin || seconds > UnixMax) return null;
+
+            var copy = SidecarCopySuffix().Match(entry.EntryPath);
+            return new Sidecar(
+                title.GetString() ?? "",
+                DateTimeOffset.FromUnixTimeSeconds(seconds).UtcDateTime,
+                copy.Success ? int.Parse(copy.Groups[1].Value) : null);
         }
         catch (Exception e) when (e is JsonException or FormatException or InvalidDataException or InvalidOperationException)
         {
@@ -218,12 +225,16 @@ public sealed partial class GoogleTakeoutSource : IMediaSource
         if (!sidecars.TryGetValue(DirectoryOf(mediaPath), out var candidates)) return null;
 
         var name = Path.GetFileName(mediaPath);
-        var exact = candidates.FirstOrDefault(s => s.Title.Equals(name, StringComparison.OrdinalIgnoreCase));
-        if (exact is not null) return exact;
+        var stemOnly = Path.GetFileNameWithoutExtension(name);
+        var copy = CopySuffix().Match(stemOnly);
+        int? copyIndex = copy.Success ? int.Parse(copy.Groups[1].Value) : null;
+        var withoutCopy = CopySuffix().Replace(stemOnly, "") + Path.GetExtension(name);
 
-        // "IMG_1234(1).jpg" belongs to the second "IMG_1234.jpg" sidecar.
-        var withoutCopy = CopySuffix().Replace(Path.GetFileNameWithoutExtension(name), "") + Path.GetExtension(name);
-        exact = candidates.FirstOrDefault(s => s.Title.Equals(withoutCopy, StringComparison.OrdinalIgnoreCase));
+        // "IMG_1234(1).jpg" belongs to "IMG_1234.jpg(1).json", whose title is also "IMG_1234.jpg".
+        var exact =
+            candidates.FirstOrDefault(s => s.CopyIndex == copyIndex && s.Title.Equals(withoutCopy, StringComparison.OrdinalIgnoreCase))
+            ?? candidates.FirstOrDefault(s => s.Title.Equals(name, StringComparison.OrdinalIgnoreCase))
+            ?? candidates.FirstOrDefault(s => s.Title.Equals(withoutCopy, StringComparison.OrdinalIgnoreCase));
         if (exact is not null) return exact;
 
         // Long names are truncated in the export; the sidecar title still has the full name.
@@ -239,8 +250,16 @@ public sealed partial class GoogleTakeoutSource : IMediaSource
         return slash < 0 ? "" : entryPath[..slash];
     }
 
-    [GeneratedRegex(@"\(\d+\)$")]
+    // DateTimeOffset.FromUnixTimeSeconds' supported range (years 1–9999).
+    private const long UnixMin = -62_135_596_800;
+    private const long UnixMax = 253_402_300_799;
+
+    [GeneratedRegex(@"\((\d+)\)$")]
     private static partial Regex CopySuffix();
+
+    // "IMG_1234.jpg(1).json", "IMG_1234.jpg.supplemental-metadata(1).json"
+    [GeneratedRegex(@"\((\d+)\)\.json$", RegexOptions.IgnoreCase)]
+    private static partial Regex SidecarCopySuffix();
 
     // English plus the common localized suffixes Takeout uses for edited copies.
     [GeneratedRegex(@"-(edited|bearbeitet|modifié|editado|modificato|bewerkt|redigerad)(\(\d+\))?$", RegexOptions.IgnoreCase)]

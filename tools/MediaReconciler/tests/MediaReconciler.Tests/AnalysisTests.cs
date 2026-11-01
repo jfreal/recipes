@@ -88,6 +88,44 @@ public class AnalysisTests
     }
 
     [Fact]
+    public void Safe_to_remove_counts_every_copy_on_the_phone()
+    {
+        var analysis = Analysis.Compute(
+            Sources,
+            Matcher.Match([
+                Item(0, "a.heic", size: 100, hash: "a"), Item(0, "a copy.heic", size: 100, hash: "a"),
+                Item(1, "a.heic", size: 100, hash: "a"), Item(2, "a.heic", size: 100, hash: "a"),
+            ]),
+            minBackupCopies: 2);
+
+        Assert.Equal(new Tally(2, 200), analysis.PerSource[0].SafeToRemove);
+    }
+
+    [Fact]
+    public void Report_file_names_stay_unique_per_source()
+    {
+        var slugs = ReportWriter.FileSlugs([
+            new(0, "Dropbox (Anna)", "dropbox", true),
+            new(1, "Dropbox Anna", "dropbox", true),
+            new(2, "Фото", "folder", true),
+            new(3, "Архив", "folder", true),
+        ]);
+
+        Assert.Equal(["dropbox-anna", "dropbox-anna-2", "source-3", "source-4"], slugs);
+    }
+
+    [Theory]
+    [InlineData("=HYPERLINK(\"x\").jpg", "\"'=HYPERLINK(\"\"x\"\").jpg\"")]
+    [InlineData("+1.jpg", "'+1.jpg")]
+    [InlineData("@x.jpg", "'@x.jpg")]
+    [InlineData("IMG_0001.HEIC", "IMG_0001.HEIC")]
+    [InlineData("a,b.jpg", "\"a,b.jpg\"")]
+    public void Csv_cells_cannot_become_formulas(string value, string expected)
+    {
+        Assert.Equal(expected, Csv.Escape(value));
+    }
+
+    [Fact]
     public void Report_files_are_written()
     {
         var dir = TempDirectory();

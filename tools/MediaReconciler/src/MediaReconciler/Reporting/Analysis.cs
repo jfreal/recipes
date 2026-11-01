@@ -64,7 +64,9 @@ public sealed class Analysis
                 .SelectMany(copies => copies.Skip(1));
 
             // A copy here can go when enough *other* backups hold the picture.
-            var safeToRemove = here.Where(g => backupCopies[g] - (source.IsBackup ? 1 : 0) >= minBackupCopies);
+            var safeToRemove = here
+                .Where(g => backupCopies[g] - (source.IsBackup ? 1 : 0) >= minBackupCopies)
+                .SelectMany(g => g.Items.Where(i => i.SourceIndex == source.Index));
 
             var lostIfDropped = source.IsBackup ? here.Where(g => backupCopies[g] == 1) : [];
             var belowIfDropped = source.IsBackup
@@ -78,7 +80,7 @@ public sealed class Analysis
                 Tally.Of(here.Where(g => g.Sources.Count() == 1)),
                 Tally.Of(groups.Where(g => !g.IsIn(source.Index))),
                 Tally.Of(duplicates, i => i.Size),
-                Tally.Of(safeToRemove),
+                Tally.Of(safeToRemove, i => i.Size),
                 Tally.Of(lostIfDropped),
                 Tally.Of(belowIfDropped));
         }).ToList();

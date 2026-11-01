@@ -69,8 +69,12 @@ public class SourceTests
         });
         WriteZip(Path.Combine(dir, "takeout-002.zip"), new()
         {
+            ["Takeout/Google Photos/Photos from 2024/IMG_0001.JPG.supplemental-metadata(1).json"] = Sidecar("IMG_0001.JPG", unix + 1),
             ["Takeout/Google Photos/Photos from 2024/IMG_0001.JPG.supplemental-metadata.json"] = Sidecar("IMG_0001.JPG", unix),
-            ["Takeout/Google Photos/Photos from 2024/IMG_0001.JPG(1).json"] = Sidecar("IMG_0001.JPG", unix + 1),
+            ["Takeout/Google Photos/Photos from 2024/huge.json"] = Encoding.UTF8.GetBytes(
+                """{ "title": "x.jpg", "photoTakenTime": { "timestamp": "99999999999999999999" } }"""),
+            ["Takeout/Google Photos/Photos from 2024/far.json"] = Encoding.UTF8.GetBytes(
+                """{ "title": "y.jpg", "photoTakenTime": { "timestamp": 999999999999999 } }"""),
             ["Takeout/Google Photos/Photos from 2024/" + longName[..40] + ".json"] = Sidecar(longName, unix + 2),
             ["Takeout/Google Photos/Holiday/IMG_0001.JPG"] = photo,
             ["Takeout/Google Photos/Holiday/metadata.json"] = Encoding.UTF8.GetBytes("""{ "title": "Holiday" }"""),
@@ -88,6 +92,7 @@ public class SourceTests
 
         var duplicateName = Assert.Single(items, i => i.Location.EndsWith("IMG_0001(1).JPG"));
         Assert.Equal("IMG_0001.JPG", duplicateName.FileName);
+        Assert.Equal(new DateTime(2024, 5, 1, 19, 34, 57), duplicateName.TakenUtc);
 
         var restored = Assert.Single(items, i => i.Location.EndsWith(truncated));
         Assert.Equal(longName, restored.FileName);
@@ -139,11 +144,24 @@ public class SourceTests
         Assert.Equal(Path.Combine(dir, "photos"), config.Sources[0].Path);
         Assert.Equal("/Camera Uploads", config.Sources[1].Path);
         Assert.Equal(Path.Combine(dir, "report"), config.OutputDirectory);
+        Assert.Null(config.CachePath);
         Assert.True(config.Sources[0].CountsAsBackup);
         Assert.False(config.Sources[2].CountsAsBackup);
 
         Environment.SetEnvironmentVariable("MR_TEST_TOKEN", "secret");
         Assert.Equal("secret", SourceConfig.ResolveSecret(config.Sources[1].RefreshToken));
+    }
+
+    [Fact]
+    public void Relative_cache_path_is_relative_to_the_config()
+    {
+        var dir = TestData.TempDirectory();
+        var path = Path.Combine(dir, "reconcile.json");
+        File.WriteAllText(path, """
+            { "cachePath": "cache/scan.json", "sources": [ { "name": "a", "type": "folder" }, { "name": "b", "type": "folder" } ] }
+            """);
+
+        Assert.Equal(Path.Combine(dir, "cache", "scan.json"), ReconcileConfig.Load(path).ResolveCachePath());
     }
 
     [Fact]

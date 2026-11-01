@@ -80,6 +80,12 @@ public sealed class ReconcileConfig
         {
             OutputDirectory = Path.GetFullPath(Path.Combine(baseDirectory, OutputDirectory));
         }
+
+        // Scheduled tasks start in System32, so relative paths must not depend on the working directory.
+        if (CachePath is not null && !Path.IsPathRooted(CachePath))
+        {
+            CachePath = Path.GetFullPath(Path.Combine(baseDirectory, CachePath));
+        }
     }
 }
 
