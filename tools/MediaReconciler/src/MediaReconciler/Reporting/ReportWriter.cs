@@ -276,13 +276,9 @@ public static partial class ReportWriter
         {
             var slug = Slug(source.Name);
             if (slug.Length == 0) slug = $"source-{source.Index + 1}";
-            if (!used.Add(slug))
-            {
-                slug = $"{slug}-{source.Index + 1}";
-                used.Add(slug);
-            }
-
-            return slug;
+            var unique = slug;
+            for (var n = source.Index + 1; !used.Add(unique); n++) unique = $"{slug}-{n}";
+            return unique;
         }).ToList();
     }
 

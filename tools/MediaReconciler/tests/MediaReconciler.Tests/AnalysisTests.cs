@@ -114,6 +114,19 @@ public class AnalysisTests
         Assert.Equal(["dropbox-anna", "dropbox-anna-2", "source-3", "source-4"], slugs);
     }
 
+    [Fact]
+    public void Numbered_report_names_do_not_collide_with_other_sources()
+    {
+        var slugs = ReportWriter.FileSlugs([
+            new(0, "A", "folder", true),
+            new(1, "A-3", "folder", true),
+            new(2, "A!", "folder", true),
+        ]);
+
+        Assert.Equal(3, slugs.Distinct().Count());
+        Assert.Equal(["a", "a-3", "a-4"], slugs);
+    }
+
     [Theory]
     [InlineData("=HYPERLINK(\"x\").jpg", "\"'=HYPERLINK(\"\"x\"\").jpg\"")]
     [InlineData("+1.jpg", "'+1.jpg")]
