@@ -17,6 +17,9 @@ const string Usage = """
       MediaReconciler devices                        List connected phones (Windows build)
     """;
 
+// The summary uses emoji and dashes; a legacy Windows code page would print them as '?'.
+Console.OutputEncoding = new System.Text.UTF8Encoding(false);
+
 using var cts = new CancellationTokenSource();
 Console.CancelKeyPress += (_, e) =>
 {

@@ -53,6 +53,7 @@ public sealed class ReconcileConfig
 
     private void Validate(string baseDirectory)
     {
+        Sources ??= [];
         if (Sources.Count < 2)
         {
             throw new ConfigException("Configure at least two sources to compare.");
@@ -69,6 +70,8 @@ public sealed class ReconcileConfig
             if (string.IsNullOrWhiteSpace(source.Name)) throw new ConfigException("Every source needs a name.");
             if (!names.Add(source.Name)) throw new ConfigException($"Two sources are both called \"{source.Name}\".");
             if (string.IsNullOrWhiteSpace(source.Type)) throw new ConfigException($"Source \"{source.Name}\" needs a type.");
+            source.Type = source.Type.Trim().ToLowerInvariant();
+            source.Exclude ??= [];
 
             if (source.Path is not null && SourceTypes.UsesLocalPath(source.Type) && !System.IO.Path.IsPathRooted(source.Path))
             {
