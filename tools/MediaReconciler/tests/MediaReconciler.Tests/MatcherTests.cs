@@ -70,6 +70,48 @@ public class MatcherTests
     }
 
     [Fact]
+    public void An_unhashed_copy_never_bridges_two_different_photos()
+    {
+        // iCloud and Google each hold a *different* IMG_1234 of the same size; the phone's copy
+        // isn't hashed. It may join one of them, but must not merge the two.
+        var icloud = Item(0, "IMG_1234.HEIC", size: 500, hash: "aa");
+        var google = Item(1, "IMG_1234.HEIC", size: 500, hash: "bb");
+        var phone = Item(2, "IMG_1234.HEIC", size: 500);
+
+        // Order matters to the matcher, so check the unhashed copy both first and last.
+        foreach (var items in new[] { new[] { phone, icloud, google }, new[] { icloud, google, phone } })
+        {
+            var groups = Matcher.Match(items);
+
+            Assert.Equal(2, groups.Count);
+            Assert.All(groups, g => Assert.True(g.Items.Select(i => i.ContentHash).OfType<string>().Distinct().Count() <= 1));
+        }
+    }
+
+    [Fact]
+    public void Same_clock_times_must_agree_even_by_whole_hours()
+    {
+        // Two phones' IMG_0001, both in camera local time, an hour apart: different photos.
+        var groups = Matcher.Match([
+            Item(0, "IMG_0001.HEIC", size: 100, local: Noon),
+            Item(1, "IMG_0001.HEIC", size: 200, local: Noon.AddHours(1)),
+        ]);
+
+        Assert.Equal(2, groups.Count);
+    }
+
+    [Fact]
+    public void Utc_plus_zero_matches_local_and_utc_with_no_shift()
+    {
+        var groups = Matcher.Match([
+            Item(0, "IMG_0001.HEIC", size: 3_000_000, hash: "aa", local: Noon),
+            Item(1, "IMG_0001.HEIC", size: 1_200_000, hash: "bb", utc: Noon),
+        ]);
+
+        Assert.Equal(MatchStrength.Strong, Assert.Single(groups).Strength);
+    }
+
+    [Fact]
     public void Dropbox_renamed_and_converted_copy_is_a_weak_match()
     {
         var groups = Matcher.Match([

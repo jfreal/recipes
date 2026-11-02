@@ -55,7 +55,6 @@ public static class Matcher
     private static readonly TimeSpan Tolerance = TimeSpan.FromSeconds(2);
     private static readonly TimeSpan MaxZoneShift = TimeSpan.FromHours(14);
     private static readonly long ZoneStepTicks = TimeSpan.FromMinutes(15).Ticks;
-    private static readonly TimeSpan ZoneStepTicksSpan = TimeSpan.FromMinutes(15);
 
     public static IReadOnlyList<MatchGroup> Match(IReadOnlyList<MediaItem> items, bool timeOnlyMatching = true)
     {
@@ -71,7 +70,9 @@ public static class Matcher
         foreach (var bucket in GroupIndexes(items, i => i.Size > 0 ? $"{i.Stem}|{i.Extension}|{i.Size}" : null))
         {
             // Two hashed files with different hashes are different files, whatever their names.
-            UnionPairs(sets, bucket, (a, b) => !HashesDiffer(items[a], items[b]), MatchStrength.Strong);
+            // Equal sizes should mean identical bytes, so never let an unhashed item join groups
+            // whose known hashes differ: that would bridge two different photos into one.
+            UnionPairs(sets, bucket, (_, _) => true, MatchStrength.Strong, requireCompatibleHashes: true);
         }
 
         // 3. Name + kind + capture time (loosely: whole quarter-hour time-zone shifts allowed).
@@ -104,20 +105,26 @@ public static class Matcher
         (a.TakenUtc is { } ua && b.TakenUtc is { } ub && !a.UtcIsFileTime && !b.UtcIsFileTime && Abs(ua - ub) <= Tolerance);
 
     /// <summary>
-    /// Strict match, or any pair of known times (file timestamps included) that differ by a
-    /// whole number of quarter hours up to 14 h: the same moment seen in different time zones.
+    /// Strict match, or a camera wall-clock time and a UTC time that differ by a whole number of
+    /// quarter hours up to 14 h (zero included, for UTC+0): the same moment seen in two time
+    /// bases. Two times on the same basis must agree to the second; a zone shift can't explain
+    /// a gap between them.
     /// </summary>
     internal static bool SameTimeLoosely(MediaItem a, MediaItem b)
     {
         if (SameTimeStrictly(a, b)) return true;
 
-        foreach (var ta in Times(a))
+        foreach (var (ta, baseA) in Times(a))
         {
-            foreach (var tb in Times(b))
+            foreach (var (tb, baseB) in Times(b))
             {
                 var delta = Abs(ta - tb);
-                // A zero shift is not a time-zone difference; the strict check above owns equal times.
-                if (delta < ZoneStepTicksSpan - Tolerance) continue;
+                if (baseA == baseB)
+                {
+                    if (delta <= Tolerance) return true;
+                    continue;
+                }
+
                 if (delta > MaxZoneShift + Tolerance) continue;
                 var offStep = delta.Ticks % ZoneStepTicks;
                 if (Math.Min(offStep, ZoneStepTicks - offStep) <= Tolerance.Ticks) return true;
@@ -126,10 +133,11 @@ public static class Matcher
 
         return false;
 
-        static IEnumerable<DateTime> Times(MediaItem item)
+        // File timestamps are UTC instants, so they share the UTC basis.
+        static IEnumerable<(DateTime Time, bool IsLocal)> Times(MediaItem item)
         {
-            if (item.TakenLocal is { } local) yield return local;
-            if (item.TakenUtc is { } utc) yield return utc;
+            if (item.TakenLocal is { } local) yield return (local, true);
+            if (item.TakenUtc is { } utc) yield return (utc, false);
         }
     }
 
@@ -141,13 +149,15 @@ public static class Matcher
         return time is { } t ? $"{item.Kind}|{(item.TakenLocal is null ? "u" : "l")}|{t:yyyyMMddHHmm}" : null;
     }
 
-    private static void UnionPairs(DisjointSets sets, List<int> bucket, Func<int, int, bool> sameItem, MatchStrength strength)
+    private static void UnionPairs(
+        DisjointSets sets, List<int> bucket, Func<int, int, bool> sameItem, MatchStrength strength, bool requireCompatibleHashes = false)
     {
         for (var x = 1; x < bucket.Count; x++)
         {
             for (var y = 0; y < x; y++)
             {
-                if (sameItem(bucket[y], bucket[x]) && sets.Union(bucket[y], bucket[x], strength, requireDisjointSources: true)) break;
+                if (sameItem(bucket[y], bucket[x]) &&
+                    sets.Union(bucket[y], bucket[x], strength, requireDisjointSources: true, requireCompatibleHashes)) break;
             }
         }
     }
@@ -164,9 +174,6 @@ public static class Matcher
 
         return buckets.Values.Where(b => b.Count > 1);
     }
-
-    private static bool HashesDiffer(MediaItem a, MediaItem b) =>
-        a.ContentHash is not null && b.ContentHash is not null && a.ContentHash != b.ContentHash;
 
     private static TimeSpan Abs(TimeSpan span) => span < TimeSpan.Zero ? -span : span;
 
@@ -205,15 +212,15 @@ public static class Matcher
         }
 
         /// <summary>Merges two groups. Returns true if they are (now) the same group.</summary>
-        public bool Union(int a, int b, MatchStrength strength, bool requireDisjointSources)
+        public bool Union(int a, int b, MatchStrength strength, bool requireDisjointSources, bool requireCompatibleHashes = false)
         {
             var ra = Find(a);
             var rb = Find(b);
             if (ra == rb) return true;
             if (requireDisjointSources && _sources[ra].Overlaps(_sources[rb])) return false;
 
-            // An unhashed item must not bridge two groups whose known hashes differ.
-            if (strength != MatchStrength.Exact && _hashes[ra].Count > 0 && _hashes[rb].Count > 0 && !_hashes[ra].Overlaps(_hashes[rb])) return false;
+            // Recompressed copies (rules 3-4) legitimately differ in hash; same-size matches don't.
+            if (requireCompatibleHashes && _hashes[ra].Count > 0 && _hashes[rb].Count > 0 && !_hashes[ra].Overlaps(_hashes[rb])) return false;
 
             if (_sources[ra].Count < _sources[rb].Count) (ra, rb) = (rb, ra);
             _parent[rb] = ra;

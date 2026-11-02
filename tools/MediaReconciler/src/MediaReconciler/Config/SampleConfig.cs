@@ -32,8 +32,10 @@ public static class SampleConfig
               // The phone itself over USB (Windows build only). Not a backup, so the report
               // shows what is only on the phone and what can safely be removed from it.
               "name": "Wife iPhone",
+              // Hashing copies each file over USB (slow), but only identical bytes count as
+              // proof that a phone photo is safe to remove.
               "type": "iphone",
-              "hash": false
+              "hash": true
             }
             // Also available:
             //   { "name": "...", "type": "manifest", "path": "inventory.csv" }  CSV from another program

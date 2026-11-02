@@ -51,7 +51,7 @@ only read new or changed files. Ctrl+C is safe: what was read so far is kept.
     { "name": "Dropbox (Wife)",       "type": "dropbox",        "path": "",
       "appKey": "abc123", "refreshToken": "env:DROPBOX_WIFE" },
     { "name": "Google Photos (wife)", "type": "google-takeout", "path": "D:\\Takeout\\wife" },
-    { "name": "Wife iPhone",          "type": "iphone",         "hash": false }
+    { "name": "Wife iPhone",          "type": "iphone" }
   ],
   "minBackupCopies": 2
 }
@@ -132,9 +132,10 @@ what Windows sees. `device` picks one phone when several are plugged in (part of
   Storage* on, older photos live only in iCloud, and that's expected.
 - Set **Settings → Photos → Transfer to Mac or PC → Keep Originals**, or Windows hands over
   converted JPEGs.
-- `"hash": false` (the sample default) is much faster: phone files are matched by name and
-  size, which is reliable for iPhone `IMG_1234.HEIC` names. `"hash": true` copies every file
-  over USB to hash it.
+- `"hash": true` (the default) copies every file over USB to hash it. It's slow the first time
+  (cached after that), but only identical bytes count as proof that a phone photo is safe to
+  remove. `"hash": false` is much faster and still shows what's missing from your backups,
+  matching by name and size, but then nothing on the phone is listed as safe to remove.
 
 I couldn't test this source against a real iPhone, so treat its first run with some suspicion.
 

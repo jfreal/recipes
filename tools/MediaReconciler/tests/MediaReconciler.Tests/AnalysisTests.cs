@@ -102,6 +102,25 @@ public class AnalysisTests
     }
 
     [Fact]
+    public void Name_and_size_matches_are_not_evidence_for_removal()
+    {
+        // The phone wasn't hashed: its copy matches both backups by name and size only.
+        var analysis = Analysis.Compute(
+            Sources,
+            Matcher.Match([
+                Item(0, "IMG_0001.HEIC", size: 100),
+                Item(1, "IMG_0001.HEIC", size: 100, hash: "a"),
+                Item(2, "IMG_0001.HEIC", size: 100, hash: "a"),
+            ]),
+            minBackupCopies: 2);
+
+        var group = Assert.Single(analysis.Groups);
+        Assert.Equal(MatchStrength.Strong, group.Strength);
+        Assert.Equal(2, analysis.BackupCopies(group));
+        Assert.Equal(new Tally(0, 0), analysis.PerSource[0].SafeToRemove);
+    }
+
+    [Fact]
     public void Weak_matches_are_never_evidence_for_removal()
     {
         var noon = new DateTime(2024, 5, 1, 12, 0, 0);
