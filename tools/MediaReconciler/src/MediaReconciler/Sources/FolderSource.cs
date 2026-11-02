@@ -101,7 +101,9 @@ public sealed class FolderSource : IMediaSource
     {
         var config = context.Config;
         var lastWrite = file.LastWriteTimeUtc;
-        var key = ScanCache.Key(file.FullName, file.Length, lastWrite);
+        // Namespaced per source type and metadata setting, so an entry hashed by another source
+        // (with no capture time) or with readMetadata off is never reused as the wrong thing.
+        var key = ScanCache.Key($"folder:{(config.ReadMetadata ? "meta" : "nometa")}:{file.FullName}", file.Length, lastWrite);
         var skipContent = IsPlaceholder(file) && !config.ReadOnlineOnlyFiles;
 
         if (!context.Cache.TryGet(key, out var cached) || (cached.Hash is null && config.Hash && !skipContent))

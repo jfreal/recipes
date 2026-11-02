@@ -45,7 +45,7 @@ public class SourceTests
         Assert.True(File.Exists(cachePath));
 
         var cache = ScanCache.Load(cachePath);
-        var key = ScanCache.Key(Path.Combine(dir, "IMG_0001.JPG"), new FileInfo(Path.Combine(dir, "IMG_0001.JPG")).Length,
+        var key = ScanCache.Key("folder:meta:" + Path.Combine(dir, "IMG_0001.JPG"), new FileInfo(Path.Combine(dir, "IMG_0001.JPG")).Length,
             File.GetLastWriteTimeUtc(Path.Combine(dir, "IMG_0001.JPG")));
         Assert.True(cache.TryGet(key, out var entry));
         Assert.Equal(first[0].ContentHash, entry.Hash);

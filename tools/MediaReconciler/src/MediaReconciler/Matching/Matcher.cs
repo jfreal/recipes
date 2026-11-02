@@ -76,10 +76,7 @@ public static class Matcher
         }
 
         // 3. Name + kind + capture time (loosely: whole quarter-hour time-zone shifts allowed).
-        foreach (var bucket in GroupIndexes(items, i => i.HasOriginalName ? $"{i.Stem}|{i.Kind}" : null))
-        {
-            UnionPairs(sets, bucket, (a, b) => SameTimeLoosely(items[a], items[b]), MatchStrength.Strong);
-        }
+        UnionByNameAndTime(sets, items);
 
         // 4. Capture time alone, only when at least one side was renamed from the date.
         if (timeOnlyMatching)
@@ -97,6 +94,53 @@ public static class Matcher
         }
 
         return sets.ToGroups();
+    }
+
+    /// <summary>
+    /// Rule 3 without comparing every same-named file with every other (a folder of thousands of
+    /// "image.jpg" would otherwise crawl). Times that differ by whole quarter hours sit at the same
+    /// second within the quarter hour, so bucketing on that second (±2 s) finds every pair
+    /// <see cref="SameTimeLoosely"/> could accept.
+    /// </summary>
+    private static void UnionByNameAndTime(DisjointSets sets, IReadOnlyList<MediaItem> items)
+    {
+        const int QuarterSeconds = 15 * 60;
+        var buckets = new Dictionary<(string Stem, MediaKind Kind, int Phase), List<int>>();
+
+        for (var x = 0; x < items.Count; x++)
+        {
+            var item = items[x];
+            if (!item.HasOriginalName) continue;
+
+            var phases = new HashSet<int>();
+            if (item.TakenLocal is { } local) phases.Add(Phase(local));
+            if (item.TakenUtc is { } utc) phases.Add(Phase(utc));
+            if (phases.Count == 0) continue;
+
+            var candidates = new SortedSet<int>();
+            foreach (var phase in phases)
+            {
+                for (var d = -2; d <= 2; d++)
+                {
+                    var neighbour = ((phase + d) % QuarterSeconds + QuarterSeconds) % QuarterSeconds;
+                    if (buckets.TryGetValue((item.Stem, item.Kind, neighbour), out var list)) candidates.UnionWith(list);
+                }
+            }
+
+            foreach (var y in candidates)
+            {
+                if (SameTimeLoosely(items[y], item) &&
+                    sets.Union(y, x, MatchStrength.Strong, requireDisjointSources: true)) break;
+            }
+
+            foreach (var phase in phases)
+            {
+                if (!buckets.TryGetValue((item.Stem, item.Kind, phase), out var list)) buckets[(item.Stem, item.Kind, phase)] = list = [];
+                list.Add(x);
+            }
+        }
+
+        static int Phase(DateTime time) => (int)(time.Ticks / TimeSpan.TicksPerSecond % QuarterSeconds);
     }
 
     /// <summary>Same instant, or same wall-clock time, within two seconds. Ignores file timestamps.</summary>

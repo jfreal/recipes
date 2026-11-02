@@ -99,6 +99,17 @@ public class HashingAndNamesTests
         Assert.Null(time.Utc);
     }
 
+    [Theory]
+    [InlineData("2024-05-01T12:34:56-0700", "2024-05-01T12:34:56", "2024-05-01T19:34:56")]
+    [InlineData("2024-05-01T12:34:56+05:30", "2024-05-01T12:34:56", "2024-05-01T07:04:56")]
+    [InlineData("2024-05-01T12:34:56.123+0000", "2024-05-01T12:34:56.123", "2024-05-01T12:34:56.123")]
+    public void Apple_video_creation_dates_give_local_and_utc(string text, string local, string utc)
+    {
+        Assert.True(CaptureTimeReader.TryParseQuickTimeCreationDate(text, out var value));
+        Assert.Equal(DateTime.Parse(local), value.DateTime);
+        Assert.Equal(DateTime.Parse(utc), value.UtcDateTime);
+    }
+
     [Fact]
     public void Unreadable_files_have_no_capture_time()
     {

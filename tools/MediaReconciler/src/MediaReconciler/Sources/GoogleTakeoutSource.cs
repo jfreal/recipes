@@ -109,7 +109,7 @@ public sealed partial class GoogleTakeoutSource : IMediaSource
                 string? hash = null;
                 if (config.Hash)
                 {
-                    var key = ScanCache.Key(entry.CacheKey, entry.Length, entry.LastWriteUtc);
+                    var key = ScanCache.Key($"takeout:{entry.CacheKey}", entry.Length, entry.LastWriteUtc);
                     if (context.Cache.TryGet(key, out var cached) && cached.Hash is not null)
                     {
                         hash = cached.Hash;

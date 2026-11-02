@@ -112,6 +112,25 @@ public class MatcherTests
     }
 
     [Fact]
+    public void Thousands_of_same_named_files_match_quickly_and_correctly()
+    {
+        // e.g. a downloads folder full of "image.jpg": each source has 6,000 of them, all at
+        // different times; the second source sees the same moments in UTC, 7 h later.
+        const int count = 6000;
+        var items = new List<MediaReconciler.Model.MediaItem>();
+        for (var k = 0; k < count; k++) items.Add(Item(0, "image.jpg", size: 100 + k, hash: $"a{k}", local: Noon.AddSeconds(k * 37)));
+        for (var k = 0; k < count; k++) items.Add(Item(1, "image.jpg", size: 50 + k, hash: $"b{k}", utc: Noon.AddHours(7).AddSeconds(k * 37)));
+
+        var watch = System.Diagnostics.Stopwatch.StartNew();
+        var groups = Matcher.Match(items);
+        watch.Stop();
+
+        Assert.Equal(count, groups.Count);
+        Assert.All(groups, g => Assert.Equal(2, g.Sources.Count()));
+        Assert.True(watch.Elapsed < TimeSpan.FromSeconds(10), $"took {watch.Elapsed}");
+    }
+
+    [Fact]
     public void Dropbox_renamed_and_converted_copy_is_a_weak_match()
     {
         var groups = Matcher.Match([
