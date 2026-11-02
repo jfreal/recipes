@@ -102,6 +102,41 @@ public class AnalysisTests
     }
 
     [Fact]
+    public void Weak_matches_are_never_evidence_for_removal()
+    {
+        var noon = new DateTime(2024, 5, 1, 12, 0, 0);
+        var analysis = Analysis.Compute(
+            Sources,
+            Matcher.Match([
+                Item(0, "IMG_0001.HEIC", local: noon),
+                Item(1, "2024-05-01 12.00.00.jpg", local: noon),
+                Item(2, "2024-05-01 12.00.00.jpg", local: noon),
+            ]),
+            minBackupCopies: 2);
+
+        var group = Assert.Single(analysis.Groups);
+        Assert.Equal(MatchStrength.Weak, group.Strength);
+        Assert.Equal(2, analysis.BackupCopies(group));
+        Assert.Equal(new Tally(0, 0), analysis.PerSource[0].SafeToRemove);
+
+        var dir = TempDirectory();
+        ReportWriter.Write(analysis, dir);
+        Assert.Single(File.ReadAllLines(Path.Combine(dir, "safe-to-remove-from-iphone.csv"))); // header only
+    }
+
+    [Fact]
+    public void Duplicate_lists_are_rewritten_even_when_empty()
+    {
+        var dir = TempDirectory();
+        var stale = Path.Combine(dir, "duplicates-in-icloud.csv");
+        File.WriteAllText(stale, "id,name\n1,old.jpg\n");
+
+        ReportWriter.Write(Build(), dir);
+
+        Assert.Single(File.ReadAllLines(stale)); // header only: iCloud has no duplicates
+    }
+
+    [Fact]
     public void Report_file_names_stay_unique_per_source()
     {
         var slugs = ReportWriter.FileSlugs([

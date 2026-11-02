@@ -66,6 +66,7 @@ public class SourceTests
             ["Takeout/Google Photos/Photos from 2024/IMG_0001.JPG"] = photo,
             ["Takeout/Google Photos/Photos from 2024/IMG_0001(1).JPG"] = TestData.JpegWithExif(Taken, null, padding: 20),
             ["Takeout/Google Photos/Photos from 2024/" + truncated] = TestData.JpegWithExif(Taken, null, padding: 30),
+            ["Takeout/Google Photos/Photos from 2024/IMG_0002(99999999999).JPG"] = TestData.JpegWithExif(Taken, null, padding: 50),
         });
         WriteZip(Path.Combine(dir, "takeout-002.zip"), new()
         {
@@ -73,6 +74,7 @@ public class SourceTests
             ["Takeout/Google Photos/Photos from 2024/IMG_0001.JPG.supplemental-metadata.json"] = Sidecar("IMG_0001.JPG", unix),
             ["Takeout/Google Photos/Photos from 2024/huge.json"] = Encoding.UTF8.GetBytes(
                 """{ "title": "x.jpg", "photoTakenTime": { "timestamp": "99999999999999999999" } }"""),
+            ["Takeout/Google Photos/Photos from 2024/z.jpg(99999999999).json"] = Sidecar("z.jpg", unix),
             ["Takeout/Google Photos/Photos from 2024/far.json"] = Encoding.UTF8.GetBytes(
                 """{ "title": "y.jpg", "photoTakenTime": { "timestamp": 999999999999999 } }"""),
             ["Takeout/Google Photos/Photos from 2024/" + longName[..40] + ".json"] = Sidecar(longName, unix + 2),
@@ -84,7 +86,7 @@ public class SourceTests
         var context = Context(new SourceConfig { Name = "g", Type = "google-takeout", Path = dir });
         var items = await new GoogleTakeoutSource().ScanAsync(context, default);
 
-        Assert.Equal(3, items.Count);
+        Assert.Equal(4, items.Count); // oversized "(N)" suffixes are tolerated, not fatal
         var first = Assert.Single(items, i => i.Location == "takeout-001.zip!Takeout/Google Photos/Photos from 2024/IMG_0001.JPG");
         Assert.Equal(new DateTime(2024, 5, 1, 19, 34, 56), first.TakenUtc);
         Assert.False(first.UtcIsFileTime);

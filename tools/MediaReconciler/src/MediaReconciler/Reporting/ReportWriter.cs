@@ -41,14 +41,12 @@ public static partial class ReportWriter
                     analysis,
                     Path.Combine(outputDirectory, $"safe-to-remove-from-{slug}.csv"),
                     analysis.Groups
-                        .Where(g => g.IsIn(source.Index) && analysis.BackupCopies(g) >= analysis.MinBackupCopies)
+                        .Where(g => g.IsIn(source.Index) && analysis.IsSafeToRemove(g, source))
                         .SelectMany(g => g.Items.Where(i => i.SourceIndex == source.Index).Select(i => (g, i))));
             }
 
-            if (stats.DuplicateCopies.Count > 0)
-            {
-                WriteDuplicates(analysis, Path.Combine(outputDirectory, $"duplicates-in-{slug}.csv"), source.Index);
-            }
+            // Written even when empty, so a rerun into the same folder never leaves an old list behind.
+            WriteDuplicates(analysis, Path.Combine(outputDirectory, $"duplicates-in-{slug}.csv"), source.Index);
         }
 
         return summary;

@@ -1,5 +1,6 @@
 using MediaReconciler.Config;
 using MediaReconciler.Hashing;
+using MediaReconciler.Matching;
 using MediaReconciler.Reporting;
 
 namespace MediaReconciler.Tests;
@@ -60,7 +61,9 @@ public class EndToEndTests
 
         Assert.Contains("are in no backup at all", summary);
         var safe = File.ReadAllLines(Path.Combine(config.OutputDirectory, "safe-to-remove-from-phone.csv"));
-        Assert.Equal(2, safe.Length);
-        Assert.Contains("IMG_0001.JPG", safe[1]);
+        // IMG_0001 is in two backups, but the Dropbox copy only matches by capture time (Weak),
+        // so it isn't evidence enough to delete the phone's copy.
+        Assert.Equal(MatchStrength.Weak, img1.Strength);
+        Assert.Single(safe);
     }
 }

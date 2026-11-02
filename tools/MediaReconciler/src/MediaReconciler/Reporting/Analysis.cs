@@ -48,6 +48,17 @@ public sealed class Analysis
 
     public int BackupCopies(MatchGroup group) => group.Sources.Count(s => Sources[s].IsBackup);
 
+    public bool IsSafeToRemove(MatchGroup group, SourceInfo source) =>
+        SafeToRemove(group, BackupCopies(group), source.IsBackup, MinBackupCopies);
+
+    /// <summary>
+    /// A copy can go when enough *other* backups hold the picture. A group joined only by
+    /// capture time (Weak) is never deletion evidence: a burst shot in the same second could
+    /// be standing in for the real backup.
+    /// </summary>
+    private static bool SafeToRemove(MatchGroup group, int backupCopies, bool sourceIsBackup, int minBackupCopies) =>
+        group.Strength != MatchStrength.Weak && backupCopies - (sourceIsBackup ? 1 : 0) >= minBackupCopies;
+
     public static Analysis Compute(IReadOnlyList<SourceInfo> sources, IReadOnlyList<MatchGroup> groups, int minBackupCopies)
     {
         var backupCopies = groups.ToDictionary(g => g, g => g.Sources.Count(s => sources[s].IsBackup));
@@ -63,9 +74,8 @@ public sealed class Analysis
                 .Where(copies => copies.Count > 1)
                 .SelectMany(copies => copies.Skip(1));
 
-            // A copy here can go when enough *other* backups hold the picture.
             var safeToRemove = here
-                .Where(g => backupCopies[g] - (source.IsBackup ? 1 : 0) >= minBackupCopies)
+                .Where(g => SafeToRemove(g, backupCopies[g], source.IsBackup, minBackupCopies))
                 .SelectMany(g => g.Items.Where(i => i.SourceIndex == source.Index));
 
             var lostIfDropped = source.IsBackup ? here.Where(g => backupCopies[g] == 1) : [];

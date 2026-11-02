@@ -212,7 +212,7 @@ public sealed partial class GoogleTakeoutSource : IMediaSource
             return new Sidecar(
                 title.GetString() ?? "",
                 DateTimeOffset.FromUnixTimeSeconds(seconds).UtcDateTime,
-                copy.Success ? int.Parse(copy.Groups[1].Value) : null);
+                copy.Success && int.TryParse(copy.Groups[1].Value, out var n) ? n : null);
         }
         catch (Exception e) when (e is JsonException or FormatException or InvalidDataException or InvalidOperationException)
         {
@@ -227,7 +227,7 @@ public sealed partial class GoogleTakeoutSource : IMediaSource
         var name = Path.GetFileName(mediaPath);
         var stemOnly = Path.GetFileNameWithoutExtension(name);
         var copy = CopySuffix().Match(stemOnly);
-        int? copyIndex = copy.Success ? int.Parse(copy.Groups[1].Value) : null;
+        int? copyIndex = copy.Success && int.TryParse(copy.Groups[1].Value, out var n) ? n : null;
         var withoutCopy = CopySuffix().Replace(stemOnly, "") + Path.GetExtension(name);
 
         // "IMG_1234(1).jpg" belongs to "IMG_1234.jpg(1).json", whose title is also "IMG_1234.jpg".

@@ -161,7 +161,7 @@ concatenated block hashes ([reference](https://www.dropbox.com/developers/refere
 |---|---|
 | `at-risk.csv` | Pictures with fewer than `minBackupCopies` backups, the ones in **no** backup first, with a path to open each from. |
 | `missing-from-<backup>.csv` | Everything that isn't in that backup, and where else it is. Use it to fill the gaps. |
-| `safe-to-remove-from-<phone>.csv` | Items on a non-backup source (the phone) that already have enough backups. |
+| `safe-to-remove-from-<phone>.csv` | Items on a non-backup source (the phone) that already have enough backups. Weak (time-only) matches never count here. |
 | `duplicates-in-<source>.csv` | Extra byte-identical copies inside one source. |
 | `weak-matches.csv` | Pairs matched only by capture time. Spot-check a few. |
 | `all-pictures.csv` | Every picture, with where each copy lives in each source. |
