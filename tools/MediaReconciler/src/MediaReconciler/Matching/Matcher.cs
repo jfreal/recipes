@@ -113,8 +113,7 @@ public static class Matcher
             if (!item.HasOriginalName) continue;
 
             var phases = new HashSet<int>();
-            if (item.TakenLocal is { } local) phases.Add(Phase(local));
-            if (item.TakenUtc is { } utc) phases.Add(Phase(utc));
+            foreach (var (time, _) in CaptureTimes(item)) phases.Add(Phase(time));
             if (phases.Count == 0) continue;
 
             var candidates = new SortedSet<int>();
@@ -158,9 +157,9 @@ public static class Matcher
     {
         if (SameTimeStrictly(a, b)) return true;
 
-        foreach (var (ta, baseA) in Times(a))
+        foreach (var (ta, baseA) in CaptureTimes(a))
         {
-            foreach (var (tb, baseB) in Times(b))
+            foreach (var (tb, baseB) in CaptureTimes(b))
             {
                 var delta = Abs(ta - tb);
                 if (baseA == baseB)
@@ -176,13 +175,16 @@ public static class Matcher
         }
 
         return false;
+    }
 
-        // File timestamps are UTC instants, so they share the UTC basis.
-        static IEnumerable<(DateTime Time, bool IsLocal)> Times(MediaItem item)
-        {
-            if (item.TakenLocal is { } local) yield return (local, true);
-            if (item.TakenUtc is { } utc) yield return (utc, false);
-        }
+    /// <summary>
+    /// When a picture was taken, on its time basis (camera wall clock or UTC). File modified
+    /// times are left out: files copied together share them, so they'd join different photos.
+    /// </summary>
+    private static IEnumerable<(DateTime Time, bool IsLocal)> CaptureTimes(MediaItem item)
+    {
+        if (item.TakenLocal is { } local) yield return (local, true);
+        if (item.TakenUtc is { } utc && !item.UtcIsFileTime) yield return (utc, false);
     }
 
     // Buckets by capture minute; pairs are then checked to the second (a pair that straddles

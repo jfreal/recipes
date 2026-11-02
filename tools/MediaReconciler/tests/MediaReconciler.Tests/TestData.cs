@@ -89,6 +89,37 @@ internal static class TestData
         }
     }
 
+    /// <summary>
+    /// A minimal MOV holding Apple's "com.apple.quicktime.creationdate" the way an iPhone writes
+    /// it: moov → meta (hdlr 'mdta', keys, ilst). <paramref name="isoMeta"/> adds the 4-byte
+    /// version/flags some writers put on meta; <paramref name="inUdta"/> nests it in moov/udta.
+    /// </summary>
+    public static byte[] AppleMov(string creationDate, bool isoMeta = false, bool inUdta = false)
+    {
+        const string key = "com.apple.quicktime.creationdate";
+        var hdlr = Atom("hdlr", U32(0), U32(0), Encoding.ASCII.GetBytes("mdta"), new byte[12], [0]);
+        var keys = Atom("keys", U32(0), U32(1), U32((uint)(8 + key.Length)), Encoding.ASCII.GetBytes("mdta"), Encoding.ASCII.GetBytes(key));
+        var data = Atom("data", U32(1), U32(0), Encoding.UTF8.GetBytes(creationDate));
+        var item = U32((uint)(8 + data.Length)).Concat(U32(1)).Concat(data).ToArray(); // type = key index 1
+        var ilst = Atom("ilst", item);
+        var meta = isoMeta ? Atom("meta", U32(0), hdlr, keys, ilst) : Atom("meta", hdlr, keys, ilst);
+        var moov = inUdta ? Atom("moov", Atom("udta", meta)) : Atom("moov", meta);
+        return Atom("ftyp", Encoding.ASCII.GetBytes("qt  "), U32(0), Encoding.ASCII.GetBytes("qt  ")).Concat(moov).ToArray();
+
+        static byte[] Atom(string type, params byte[][] parts)
+        {
+            var body = parts.SelectMany(p => p).ToArray();
+            return U32((uint)(8 + body.Length)).Concat(Encoding.ASCII.GetBytes(type)).Concat(body).ToArray();
+        }
+
+        static byte[] U32(uint value)
+        {
+            var bytes = new byte[4];
+            BinaryPrimitives.WriteUInt32BigEndian(bytes, value);
+            return bytes;
+        }
+    }
+
     private static readonly List<string> Created = [];
 
     static TestData()

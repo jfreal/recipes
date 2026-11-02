@@ -110,6 +110,19 @@ public class HashingAndNamesTests
         Assert.Equal(DateTime.Parse(utc), value.UtcDateTime);
     }
 
+    [Theory]
+    [InlineData(false, false)]
+    [InlineData(true, false)]
+    [InlineData(false, true)]
+    public void Iphone_video_keeps_its_local_capture_time(bool isoMeta, bool inUdta)
+    {
+        var mov = TestData.AppleMov("2024-05-01T12:34:56-0700", isoMeta, inUdta);
+        var time = CaptureTimeReader.Read(new MemoryStream(mov));
+
+        Assert.Equal(new DateTime(2024, 5, 1, 12, 34, 56), time.Local);
+        Assert.Equal(new DateTime(2024, 5, 1, 19, 34, 56), time.Utc);
+    }
+
     [Fact]
     public void Unreadable_files_have_no_capture_time()
     {

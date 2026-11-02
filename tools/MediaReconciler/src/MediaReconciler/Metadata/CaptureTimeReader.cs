@@ -41,10 +41,7 @@ public static class CaptureTimeReader
             }
         }
 
-        if (local is null && utc is null &&
-            directories.OfType<QuickTimeMetadataHeaderDirectory>().FirstOrDefault()?
-                .GetString(QuickTimeMetadataHeaderDirectory.TagCreationDate) is { } appleDate &&
-            TryParseQuickTimeCreationDate(appleDate, out var withZone))
+        if (local is null && utc is null && AppleVideoDate.TryRead(stream, out var withZone))
         {
             // iPhone videos record "com.apple.quicktime.creationdate" with the local offset,
             // giving the camera wall-clock time that renamed Dropbox copies are matched on.

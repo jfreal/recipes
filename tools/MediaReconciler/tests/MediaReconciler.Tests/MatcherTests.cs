@@ -89,6 +89,18 @@ public class MatcherTests
     }
 
     [Fact]
+    public void File_times_never_join_same_named_files()
+    {
+        // Two different "image.jpg" with no capture metadata, copied at the same moment.
+        var groups = Matcher.Match([
+            Item(0, "image.jpg", size: 100, hash: "aa", utc: Noon, utcIsFileTime: true),
+            Item(1, "image.jpg", size: 200, hash: "bb", utc: Noon, utcIsFileTime: true),
+        ]);
+
+        Assert.Equal(2, groups.Count);
+    }
+
+    [Fact]
     public void Same_clock_times_must_agree_even_by_whole_hours()
     {
         // Two phones' IMG_0001, both in camera local time, an hour apart: different photos.
