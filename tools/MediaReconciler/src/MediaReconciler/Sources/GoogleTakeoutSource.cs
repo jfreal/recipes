@@ -82,7 +82,7 @@ public sealed partial class GoogleTakeoutSource : IMediaSource
         // 2023" plus every album folder); Google stores it once, so we keep it once.
         var items = new List<MediaItem>();
         var seenHashes = new HashSet<string>(StringComparer.Ordinal);
-        var seenWithoutHash = new HashSet<(string, long)>();
+        var seenWithoutHash = new HashSet<(string, long, DateTime?)>();
         var albumCopies = 0;
         var edited = 0;
         var done = 0;
@@ -104,6 +104,7 @@ public sealed partial class GoogleTakeoutSource : IMediaSource
 
                 var sidecar = FindSidecar(sidecars, entry.EntryPath);
                 var originalName = sidecar?.Title is { Length: > 0 } title && MediaNames.GetKind(title) is not null ? title : fileName;
+                var takenUtc = sidecar?.TakenUtc ?? (entry.LastWriteUtc == default ? null : entry.LastWriteUtc);
 
                 string? hash = null;
                 if (config.Hash)
@@ -123,7 +124,8 @@ public sealed partial class GoogleTakeoutSource : IMediaSource
 
                 var isAlbumCopy = hash is not null
                     ? !seenHashes.Add(hash)
-                    : !seenWithoutHash.Add((MediaNames.NormalizeStem(originalName), entry.Length));
+                    // iPhone counters wrap at IMG_9999, so name + size alone can repeat years apart.
+                    : !seenWithoutHash.Add((MediaNames.NormalizeStem(originalName), entry.Length, takenUtc));
                 if (isAlbumCopy)
                 {
                     albumCopies++;
@@ -139,7 +141,7 @@ public sealed partial class GoogleTakeoutSource : IMediaSource
                     Kind = kind.Value,
                     Size = entry.Length,
                     ContentHash = hash,
-                    TakenUtc = sidecar?.TakenUtc ?? (entry.LastWriteUtc == default ? null : entry.LastWriteUtc),
+                    TakenUtc = takenUtc,
                     UtcIsFileTime = sidecar is null,
                     TakenLocal = localFromName == default ? null : localFromName,
                     LocalPath = entry.LocalPath,

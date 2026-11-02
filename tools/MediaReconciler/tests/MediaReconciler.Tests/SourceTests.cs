@@ -104,6 +104,34 @@ public class SourceTests
     }
 
     [Fact]
+    public async Task Takeout_without_hashing_keeps_same_name_and_size_from_different_years()
+    {
+        var dir = TestData.TempDirectory();
+        var old = new DateTimeOffset(2019, 3, 1, 10, 0, 0, TimeSpan.Zero).ToUnixTimeSeconds();
+        var recent = new DateTimeOffset(2023, 7, 4, 18, 0, 0, TimeSpan.Zero).ToUnixTimeSeconds();
+        var bytes = new byte[500];
+
+        WriteZip(Path.Combine(dir, "takeout-001.zip"), new()
+        {
+            ["Takeout/Google Photos/Photos from 2019/IMG_1234.JPG"] = bytes,
+            ["Takeout/Google Photos/Photos from 2019/IMG_1234.JPG.json"] = Sidecar("IMG_1234.JPG", old),
+            ["Takeout/Google Photos/Photos from 2023/IMG_1234.JPG"] = bytes,
+            ["Takeout/Google Photos/Photos from 2023/IMG_1234.JPG.json"] = Sidecar("IMG_1234.JPG", recent),
+            ["Takeout/Google Photos/Holiday/IMG_1234.JPG"] = bytes,
+            ["Takeout/Google Photos/Holiday/IMG_1234.JPG.json"] = Sidecar("IMG_1234.JPG", recent),
+        });
+
+        var config = new SourceConfig { Name = "g", Type = "google-takeout", Path = dir, Hash = false };
+        var items = await new GoogleTakeoutSource().ScanAsync(Context(config), default);
+
+        // Two different photos (iPhone counters wrap), plus one album copy that is skipped.
+        Assert.Equal(2, items.Count);
+        Assert.Equal(
+            [new DateTime(2019, 3, 1, 10, 0, 0), new DateTime(2023, 7, 4, 18, 0, 0)],
+            items.Select(i => i.TakenUtc!.Value).Order());
+    }
+
+    [Fact]
     public void Manifest_rows_become_items()
     {
         var items = ManifestSource.Parse(
