@@ -55,6 +55,7 @@ public static class Matcher
     private static readonly TimeSpan Tolerance = TimeSpan.FromSeconds(2);
     private static readonly TimeSpan MaxZoneShift = TimeSpan.FromHours(14);
     private static readonly long ZoneStepTicks = TimeSpan.FromMinutes(15).Ticks;
+    private static readonly TimeSpan ZoneStepTicksSpan = TimeSpan.FromMinutes(15);
 
     public static IReadOnlyList<MatchGroup> Match(IReadOnlyList<MediaItem> items, bool timeOnlyMatching = true)
     {
@@ -115,6 +116,8 @@ public static class Matcher
             foreach (var tb in Times(b))
             {
                 var delta = Abs(ta - tb);
+                // A zero shift is not a time-zone difference; the strict check above owns equal times.
+                if (delta < ZoneStepTicksSpan - Tolerance) continue;
                 if (delta > MaxZoneShift + Tolerance) continue;
                 var offStep = delta.Ticks % ZoneStepTicks;
                 if (Math.Min(offStep, ZoneStepTicks - offStep) <= Tolerance.Ticks) return true;
@@ -173,6 +176,7 @@ public static class Matcher
         private readonly int[] _parent;
         private readonly HashSet<int>[] _sources;
         private readonly MatchStrength[] _strength;
+        private readonly HashSet<string>[] _hashes;
 
         public DisjointSets(IReadOnlyList<MediaItem> items)
         {
@@ -180,10 +184,12 @@ public static class Matcher
             _parent = new int[items.Count];
             _sources = new HashSet<int>[items.Count];
             _strength = new MatchStrength[items.Count];
+            _hashes = new HashSet<string>[items.Count];
             for (var i = 0; i < items.Count; i++)
             {
                 _parent[i] = i;
                 _sources[i] = [items[i].SourceIndex];
+                _hashes[i] = items[i].ContentHash is { } h ? [h] : [];
             }
         }
 
@@ -206,9 +212,13 @@ public static class Matcher
             if (ra == rb) return true;
             if (requireDisjointSources && _sources[ra].Overlaps(_sources[rb])) return false;
 
+            // An unhashed item must not bridge two groups whose known hashes differ.
+            if (strength != MatchStrength.Exact && _hashes[ra].Count > 0 && _hashes[rb].Count > 0 && !_hashes[ra].Overlaps(_hashes[rb])) return false;
+
             if (_sources[ra].Count < _sources[rb].Count) (ra, rb) = (rb, ra);
             _parent[rb] = ra;
             _sources[ra].UnionWith(_sources[rb]);
+            _hashes[ra].UnionWith(_hashes[rb]);
             _strength[ra] = (MatchStrength)Math.Max((int)Max(_strength[ra], _strength[rb]), (int)strength);
             return true;
         }

@@ -89,10 +89,24 @@ internal static class TestData
         }
     }
 
+    private static readonly List<string> Created = [];
+
+    static TestData()
+    {
+        AppDomain.CurrentDomain.ProcessExit += (_, _) =>
+        {
+            foreach (var dir in Created)
+            {
+                try { Directory.Delete(dir, recursive: true); } catch (IOException) { } catch (UnauthorizedAccessException) { }
+            }
+        };
+    }
+
     public static string TempDirectory()
     {
         var dir = Path.Combine(Path.GetTempPath(), "mediareconciler-tests", Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(dir);
+        lock (Created) Created.Add(dir);
         return dir;
     }
 }

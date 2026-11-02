@@ -54,10 +54,12 @@ public sealed class Analysis
     /// <summary>
     /// A copy can go when enough *other* backups hold the picture. A group joined only by
     /// capture time (Weak) is never deletion evidence: a burst shot in the same second could
-    /// be standing in for the real backup.
+    /// be standing in for the real backup. A name-based (Strong) group isn't either: a
+    /// recompressed copy shares the original's name, so only identical bytes (Exact) prove
+    /// the full-quality original is safely held elsewhere.
     /// </summary>
     private static bool SafeToRemove(MatchGroup group, int backupCopies, bool sourceIsBackup, int minBackupCopies) =>
-        group.Strength != MatchStrength.Weak && backupCopies - (sourceIsBackup ? 1 : 0) >= minBackupCopies;
+        group.Strength == MatchStrength.Exact && backupCopies - (sourceIsBackup ? 1 : 0) >= minBackupCopies;
 
     public static Analysis Compute(IReadOnlyList<SourceInfo> sources, IReadOnlyList<MatchGroup> groups, int minBackupCopies)
     {

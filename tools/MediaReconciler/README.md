@@ -142,7 +142,9 @@ I couldn't test this source against a real iPhone, so treat its first run with s
 
 If another program can list a source (your existing iPhone app, a NAS, another cloud), have it
 write a CSV and add it as a `manifest` source. A header row is required, columns can be in any
-order, and only `name` is mandatory:
+order, and only `name` is mandatory. A `manifest` counts as a backup unless you set
+`"isBackup": false`, so set it on any manifest that lists your phone, or the risk numbers and
+exit code will understate what is unprotected:
 
 ```csv
 location,name,size,hash,taken_utc,taken_local
@@ -161,7 +163,7 @@ concatenated block hashes ([reference](https://www.dropbox.com/developers/refere
 |---|---|
 | `at-risk.csv` | Pictures with fewer than `minBackupCopies` backups, the ones in **no** backup first, with a path to open each from. |
 | `missing-from-<backup>.csv` | Everything that isn't in that backup, and where else it is. Use it to fill the gaps. |
-| `safe-to-remove-from-<phone>.csv` | Items on a non-backup source (the phone) that already have enough backups. Weak (time-only) matches never count here. |
+| `safe-to-remove-from-<phone>.csv` | Items on a non-backup source (the phone) that already have enough backups. Only exact (identical-bytes) matches count here: a name-only or time-only match could be a recompressed copy, so it never does. Keep `hash` on for the phone. |
 | `duplicates-in-<source>.csv` | Extra byte-identical copies inside one source. |
 | `weak-matches.csv` | Pairs matched only by capture time. Spot-check a few. |
 | `all-pictures.csv` | Every picture, with where each copy lives in each source. |
